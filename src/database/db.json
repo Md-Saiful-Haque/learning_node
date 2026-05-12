@@ -12,12 +12,6 @@
     "description": "Smartwatch with fitness tracking, heart-rate monitoring, sleep analysis, and AMOLED display."
   },
   {
-    "id": 3,
-    "name": "Sony WH-1000XM5",
-    "price": 399,
-    "description": "Premium wireless noise-canceling headphones with high-quality sound and long battery life."
-  },
-  {
     "id": 1778490233484,
     "name": "P-3",
     "price": 350,
