@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from "http";
 import { insertProduct, readProduct } from "../service/product.service";
 import type { IProduct } from "../types/product.type";
 import { parseBody } from "../utility/parseBody";
+import { sendResponse } from "../utility/sendResponse";
 
 export const productController = async (req: IncomingMessage, res: ServerResponse) => {
     const url = req.url;
@@ -21,10 +22,13 @@ export const productController = async (req: IncomingMessage, res: ServerRespons
         //         name : "Product -1"
         //     }
         // ]
-        const products = readProduct()
+        try {
+            const products = readProduct()
 
-        res.writeHead(200, { "content-type": "application/json" });
-        res.end(JSON.stringify({ messege: "This is Products Route", data: products }))
+            return sendResponse(res, 200, true, "Product retrived successfully", products)
+        } catch (error) {
+            return sendResponse(res, 500, false, "Something Went Wrong", error)
+        }
     }
     else if (method === "GET" && id !== null) {
         const products = readProduct()
@@ -32,12 +36,17 @@ export const productController = async (req: IncomingMessage, res: ServerRespons
         // console.log(product);
 
         if (!product) {
-            res.writeHead(404, { "content-type": "application/json" });
-            res.end(JSON.stringify({ messege: "Product Not Found", data: product }))
+
+            return sendResponse(res, 404, false, "Product Not Found", product)
+            
         }
 
-        res.writeHead(200, { "content-type": "application/json" });
-        res.end(JSON.stringify({ messege: "Product retrived successfully", data: product }))
+        try {
+            const products = readProduct()
+            return sendResponse(res, 200, true, "Product retrived successfully", products)
+        } catch (error) {
+            return sendResponse(res, 500, false, "Something Went Wrong", error)
+        }
     }
     else if (method === "POST" && url === "/products") {
         // created product by POST method
